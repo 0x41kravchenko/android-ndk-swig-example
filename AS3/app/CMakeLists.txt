@@ -63,7 +63,11 @@ set(CMAKE_SWIG_FLAGS -c++ -package ${JAVA_GEN_PACKAGE})
 set(CMAKE_SWIG_OUTDIR ${JAVA_GEN_DIR})
 
 # Export a wrapper file to Java, and link with the created C++ library
-swig_add_module(SeePlusPlus_Wrapper java ${SWIG_I_FILE})
+if (${CMAKE_VERSION} VERSION_LESS "3.8.0")
+    swig_add_module(SeePlusPlus_Wrapper java ${SWIG_I_FILE})
+else()
+    swig_add_library(SeePlusPlus_Wrapper LANGUAGE java TYPE MODULE SOURCES ${SWIG_I_FILE})
+endif()
 swig_link_libraries(SeePlusPlus_Wrapper SeePlusPlus)
 
 # Specifies libraries CMake should link to your target library. You
